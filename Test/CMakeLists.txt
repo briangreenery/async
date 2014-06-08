@@ -1,4 +1,5 @@
 add_executable(runtests EXCLUDE_FROM_ALL
+  BufferTest.cpp
   IntrusivePtrTest.cpp
 )
 
