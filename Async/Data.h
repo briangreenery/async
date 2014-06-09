@@ -2,6 +2,7 @@
 #define Async_Data_h
 
 #include "Async/Buffer.h"
+#include <string.h>
 
 class Data
 {
@@ -42,6 +43,12 @@ inline const uint8_t* Data::Start() const
 inline size_t Data::Length() const
 {
   return m_length;
+}
+
+inline bool operator==( const Data& a, const Data& b )
+{
+  return ( a.Length() == b.Length() ) &&
+         ( memcmp( a.Start(), b.Start(), a.Length() ) == 0 );
 }
 
 #endif

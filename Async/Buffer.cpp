@@ -22,7 +22,7 @@ BufferPtr Buffer::New( size_t length )
 
 size_t Buffer::Write( const uint8_t* data, size_t length )
 {
-  size_t amount = std::min<size_t>( length, m_end - m_mark );
+  size_t amount = std::min<size_t>( length, FreeLength() );
   memcpy( m_mark, data, amount );
   m_mark += amount;
   return amount;
@@ -31,4 +31,10 @@ size_t Buffer::Write( const uint8_t* data, size_t length )
 size_t Buffer::Write( const Data& data )
 {
   return Write( data.Start(), data.Length() );
+}
+
+Data Buffer::Used() const
+{
+  return Data(
+    BufferPtr( const_cast<Buffer*>( this ) ), m_start, m_mark - m_start );
 }

@@ -19,6 +19,11 @@ public:
   size_t Write( const uint8_t* data, size_t length );
   size_t Write( const Data& );
 
+  Data Used() const;
+
+  size_t UsedLength() const;
+  size_t FreeLength() const;
+
 private:
   Buffer( const Buffer& );
   Buffer& operator=( const Buffer& );
@@ -42,6 +47,16 @@ inline void IntrusivePtrRelease( Buffer* buffer )
 {
   if ( --buffer->m_refs == 0 )
     free( buffer );
+}
+
+inline size_t Buffer::UsedLength() const
+{
+  return m_mark - m_start;
+}
+
+inline size_t Buffer::FreeLength() const
+{
+  return m_end - m_mark;
 }
 
 #endif
