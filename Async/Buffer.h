@@ -1,22 +1,25 @@
-#ifndef Buffer_h
-#define Buffer_h
+#ifndef Async_Buffer_h
+#define Async_Buffer_h
 
-#include "IntrusivePtr.h"
+#include "Async/IntrusivePtr.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 
+class Buffer;
+class Data;
+typedef IntrusivePtr<Buffer> BufferPtr;
+
 class Buffer
 {
 public:
-  static IntrusivePtr<Buffer> New( size_t length );
+  static BufferPtr New( size_t length );
 
-  // Write 'data' to this buffer. Returns number of bytes actually written.
+  // Write to this buffer. Returns number of bytes actually written.
   size_t Write( const uint8_t* data, size_t length );
+  size_t Write( const Data& );
 
 private:
-  Buffer( uint8_t* start, size_t length );
-
   Buffer( const Buffer& );
   Buffer& operator=( const Buffer& );
 

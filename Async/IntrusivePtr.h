@@ -1,12 +1,12 @@
-#ifndef IntrusivePtr_h
-#define IntrusivePtr_h
+#ifndef Async_IntrusivePtr_h
+#define Async_IntrusivePtr_h
 
 template <class T>
 class IntrusivePtr
 {
 public:
   IntrusivePtr();
-  IntrusivePtr( T* t );
+  explicit IntrusivePtr( T* t );
   IntrusivePtr( const IntrusivePtr<T>& );
   ~IntrusivePtr();
 

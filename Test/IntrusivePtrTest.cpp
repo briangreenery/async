@@ -31,7 +31,7 @@ TEST( IntrusivePtrTest, ConstructorAddsRef )
   ASSERT_EQ( 2, bearmo.refs );
 }
 
-TEST( IntrusivePtrTest, CopyConstructorAddsRef )
+TEST( IntrusivePtrTest, AssignmentAddsRef )
 {
   Bearmo bearmo;
   ASSERT_EQ( 0, bearmo.refs );
@@ -57,7 +57,7 @@ TEST( IntrusivePtrTest, SelfAssignment )
   ASSERT_FALSE( bearmo.released );  
 }
 
-TEST( IntrusivePtrTest, DestructoReleases )
+TEST( IntrusivePtrTest, DestructorReleases )
 {
   Bearmo bearmo;
   ASSERT_EQ( 0, bearmo.refs );
