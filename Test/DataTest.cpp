@@ -23,3 +23,11 @@ TEST( DataTest, LiteralConstructor )
   ASSERT_EQ( 0, memcmp( data.Start(), "Hello", 5 ) );
   ASSERT_EQ( 5, data.Length() );
 }
+
+TEST( DataTest, Slice )
+{
+  Data data( "Hello" );
+
+  ASSERT_EQ( data, data.Slice( data.Start(), data.Length() ) );
+  ASSERT_EQ( Data( "lo" ), data.Slice( data.Start() + 3, 2 ) );
+}

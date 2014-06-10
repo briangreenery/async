@@ -30,5 +30,5 @@ TEST( BufferTest, BufferSlice )
 
   ASSERT_EQ( data.Length(), buffer->Write( data ) );
   ASSERT_EQ( data, buffer->Slice( buffer->Start(), buffer->UsedLength() ) );
-  ASSERT_EQ( buffer->Slice( buffer->Start() + 1, 4 ), Data( "ello" ) );
+  ASSERT_EQ( Data( "ello" ), buffer->Slice( buffer->Start() + 1, 4 ) );
 }

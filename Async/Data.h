@@ -19,7 +19,7 @@ public:
   const uint8_t* Start() const;
   size_t Length() const;
 
-  Data Slice( uint8_t* start, size_t length ) const;
+  Data Slice( const uint8_t* start, size_t length ) const;
 
 private:
   IntrusivePtr<BufferBase> m_buffer;
@@ -51,7 +51,7 @@ inline size_t Data::Length() const
   return m_length;
 }
 
-inline Data Data::Slice( uint8_t* start, size_t length ) const
+inline Data Data::Slice( const uint8_t* start, size_t length ) const
 {
   assert( start >= m_start );
   assert( start + length <= m_start + m_length );
