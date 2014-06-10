@@ -11,6 +11,9 @@ TEST( DataTest, ManagesRefCount )
   {
     Data data = buffer->Slice( buffer->Start(), 0 );
     ASSERT_EQ( 2, buffer->Refs() );
+
+    Data data2 = data.Slice( data.Start(), 0 );
+    ASSERT_EQ( 3, buffer->Refs() );
   }
 
   ASSERT_EQ( 1, buffer->Refs() );
