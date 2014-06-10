@@ -16,7 +16,7 @@ TEST( DataTest, ManagesBufferRefCount )
   ASSERT_EQ( 1, buffer->Refs() );
 }
 
-TEST( BufferTest, LiteralConstructor )
+TEST( DataTest, LiteralConstructor )
 {
   Data data( "Hello" );
 
