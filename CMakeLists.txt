@@ -10,6 +10,7 @@ target_include_directories(async PUBLIC .)
 
 add_executable(runtests EXCLUDE_FROM_ALL
   Test/BufferTest.cpp
+  Test/DataTest.cpp
   Test/IntrusivePtrTest.cpp
 )
 

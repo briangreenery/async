@@ -1,50 +1,75 @@
 #ifndef Async_Buffer_h
 #define Async_Buffer_h
 
+#include "Async/BufferBase.h"
+#include "Async/Data.h"
 #include "Async/IntrusivePtr.h"
-#include <stddef.h>
+#include <assert.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 class Buffer;
 class Data;
 typedef IntrusivePtr<Buffer> BufferPtr;
 
-class Buffer
+class Buffer : public BufferBase
 {
 public:
   static BufferPtr New( size_t length );
 
-  size_t Write( const uint8_t* data, size_t length );
-  size_t Write( const Data& );
+  Data Slice( uint8_t* start, size_t length );
 
-  Data Used() const;
+  size_t Refs() const;
+
+  uint8_t* Start() const;
+  uint8_t* Mark() const;
+  uint8_t* End() const;
 
   size_t UsedLength() const;
   size_t FreeLength() const;
+
+  size_t Write( const uint8_t* data, size_t length );
+  size_t Write( const Data& );
 
 private:
   Buffer( const Buffer& );
   Buffer& operator=( const Buffer& );
 
-  friend void IntrusivePtrAddRef( Buffer* );
-  friend void IntrusivePtrRelease( Buffer* );
-
-  size_t m_refs;
   uint8_t* m_start;
   uint8_t* m_mark;
   uint8_t* m_end;
 };
 
-inline void IntrusivePtrAddRef( Buffer* buffer )
+inline Data Buffer::Slice( uint8_t* start, size_t length )
 {
-  buffer->m_refs++;
+  assert( start >= m_start );
+  assert( start + length <= m_mark );
+
+  return Data( IntrusivePtr<BufferBase>( this ), start, length );
 }
 
-inline void IntrusivePtrRelease( Buffer* buffer )
+inline size_t Buffer::Write( const Data& data )
 {
-  if ( --buffer->m_refs == 0 )
-    free( buffer );
+  return Write( data.Start(), data.Length() );
+}
+
+inline size_t Buffer::Refs() const
+{
+  return m_refs;
+}
+
+inline uint8_t* Buffer::Start() const
+{
+  return m_start;
+}
+
+inline uint8_t* Buffer::Mark() const
+{
+  return m_mark;
+}
+
+inline uint8_t* Buffer::End() const
+{
+  return m_end;
 }
 
 inline size_t Buffer::UsedLength() const
