@@ -1,7 +1,7 @@
 #include "Async/Buffer.h"
 #include <gtest/gtest.h>
 
-TEST( BufferTest, BufferWriteRaw )
+TEST( BufferTest, WriteRaw )
 {
   BufferPtr buffer = Buffer::New( 1 );
 
@@ -12,7 +12,7 @@ TEST( BufferTest, BufferWriteRaw )
   ASSERT_EQ( 0, buffer->FreeLength() );
 }
 
-TEST( BufferTest, BufferWriteData )
+TEST( BufferTest, WriteData )
 {
   BufferPtr buffer = Buffer::New( 1 );
 
@@ -23,7 +23,7 @@ TEST( BufferTest, BufferWriteData )
   ASSERT_EQ( 0, buffer->FreeLength() );
 }
 
-TEST( BufferTest, BufferSlice )
+TEST( BufferTest, Slice )
 {
   BufferPtr buffer = Buffer::New( 32 );
   Data data( "Hello, world!" );

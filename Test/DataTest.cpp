@@ -2,7 +2,7 @@
 #include "Async/Data.h"
 #include <gtest/gtest.h>
 
-TEST( DataTest, ManagesBufferRefCount )
+TEST( DataTest, ManagesRefCount )
 {
   BufferPtr buffer = Buffer::New( 0 );
 
