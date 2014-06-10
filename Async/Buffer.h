@@ -15,7 +15,6 @@ class Buffer
 public:
   static BufferPtr New( size_t length );
 
-  // Write to this buffer. Returns number of bytes actually written.
   size_t Write( const uint8_t* data, size_t length );
   size_t Write( const Data& );
 
@@ -32,7 +31,6 @@ private:
   friend void IntrusivePtrRelease( Buffer* );
 
   size_t m_refs;
-
   uint8_t* m_start;
   uint8_t* m_mark;
   uint8_t* m_end;

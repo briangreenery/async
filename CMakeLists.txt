@@ -5,6 +5,7 @@ add_subdirectory(Dependencies)
 add_library(async STATIC
   Async/Buffer.cpp)
 
+target_link_libraries(async PUBLIC uv)
 target_include_directories(async PUBLIC .)
 
 add_executable(runtests EXCLUDE_FROM_ALL
