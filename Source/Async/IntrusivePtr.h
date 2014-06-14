@@ -1,6 +1,8 @@
 #ifndef Async_IntrusivePtr_h
 #define Async_IntrusivePtr_h
 
+// A generic reference counted pointer.
+
 template <class T>
 class IntrusivePtr
 {

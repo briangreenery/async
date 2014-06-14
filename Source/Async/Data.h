@@ -5,6 +5,11 @@
 #include "Async/IntrusivePtr.h"
 #include <assert.h>
 
+// Data is a reference to a chunk of memory, possibly living in a Buffer.
+// Since the data can be living in a reference counted Buffer, to safely copy
+// Data you must use the Slice() function or operator=, which will also copy
+// over a reference to the Buffer.
+
 class Data
 {
 public:

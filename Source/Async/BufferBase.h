@@ -4,6 +4,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+// Buffer base holds the reference count for Buffers. It's split into its own
+// header file to resolve a circular #include dependency between Buffer and
+// Data.
+
 class BufferBase
 {
 protected:
