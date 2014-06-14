@@ -1,5 +1,5 @@
 if(${WIN32})
-  set(UV_SOURCES
+  list(APPEND UV_SOURCES
     src/win/async.c
     src/win/core.c
     src/win/dl.c
@@ -27,7 +27,7 @@ if(${WIN32})
     src/win/winsock.c
   )
 else()
-  set(APPEND UV_SOURCES
+  list(APPEND UV_SOURCES
     src/unix/async.c
     src/unix/core.c
     src/unix/dl.c
@@ -49,7 +49,7 @@ else()
     src/unix/udp.c
   )
 
-  set(UV_COMPILE_OPTIONS
+  list(APPEND UV_COMPILE_OPTIONS
     --std=c89
     -Wall
     -Wextra
@@ -58,12 +58,12 @@ else()
     -O3
   )
 
-  set(UV_COMPILE_DEFINITIONS
+  list(APPEND UV_COMPILE_DEFINITIONS
     _LARGEFILE_SOURCE
     _FILE_OFFSET_BITS=64
   )
 
-  set(UV_LINK_LIBRARIES
+  list(APPEND UV_LINK_LIBRARIES
     "-lm"
     "-lpthread"
   )
