@@ -4,7 +4,6 @@
 #include "Async/BufferBase.h"
 #include "Async/IntrusivePtr.h"
 #include <assert.h>
-#include <string.h>
 
 class Data
 {
@@ -20,6 +19,8 @@ public:
   size_t Length() const;
 
   Data Slice( const uint8_t* start, size_t length ) const;
+
+  bool Coalesce( const Data& other );
 
 private:
   IntrusivePtr<BufferBase> m_buffer;
@@ -59,10 +60,17 @@ inline Data Data::Slice( const uint8_t* start, size_t length ) const
   return Data( m_buffer, start, length );
 }
 
-inline bool operator==( const Data& a, const Data& b )
+inline bool Data::Coalesce( const Data& other )
 {
-  return ( a.Length() == b.Length() ) &&
-         ( memcmp( a.Start(), b.Start(), a.Length() ) == 0 );
+  if ( m_start + m_length == other.m_start )
+  {
+    m_length += other.m_length;
+    return true;
+  }
+
+  return false;
 }
+
+bool operator==( const Data&, const Data& );
 
 #endif

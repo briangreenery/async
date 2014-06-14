@@ -16,7 +16,7 @@ class Buffer : public BufferBase
 public:
   static BufferPtr New( size_t length );
 
-  Data Slice( uint8_t* start, size_t length );
+  Data Slice( const uint8_t* start, size_t length );
 
   size_t Refs() const;
 
@@ -39,7 +39,7 @@ private:
   uint8_t* m_end;
 };
 
-inline Data Buffer::Slice( uint8_t* start, size_t length )
+inline Data Buffer::Slice( const uint8_t* start, size_t length )
 {
   assert( start >= m_start );
   assert( start + length <= m_mark );
