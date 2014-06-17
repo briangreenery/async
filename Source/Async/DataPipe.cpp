@@ -1,12 +1,12 @@
-#include "DataQueue.h"
+#include "DataPipe.h"
 
-DataQueue::DataQueue()
+DataPipe::DataPipe()
   : m_wantRead( false )
   , m_wantWrite( false )
 {
 }
 
-void DataQueue::Write( const Data& data )
+void DataPipe::Write( const Data& data )
 {
   if ( m_queue.empty() || !m_queue.front().Coalesce( data ) )
     m_queue.push_front( data );
@@ -18,7 +18,7 @@ void DataQueue::Write( const Data& data )
   }
 }
 
-Data DataQueue::Read()
+Data DataPipe::Read()
 {
   if ( m_queue.empty() )
   {
@@ -37,12 +37,12 @@ Data DataQueue::Read()
   return result;
 }
 
-void DataQueue::OnWriteable( Callback& cb )
+void DataPipe::OnWriteable( Callback& cb )
 {
   m_writeable.Connect( cb );
 }
 
-void DataQueue::OnReadable( Callback& cb )
+void DataPipe::OnReadable( Callback& cb )
 {
   m_readable.Connect( cb );
 }

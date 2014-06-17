@@ -1,5 +1,6 @@
 #include "Buffer.h"
 #include <algorithm>
+#include <assert.h>
 #include <string.h>
 
 BufferPtr Buffer::New( size_t length )
@@ -25,4 +26,12 @@ size_t Buffer::Write( const uint8_t* data, size_t length )
   memcpy( m_mark, data, amount );
   m_mark += amount;
   return amount;
+}
+
+Data Buffer::Slice( const uint8_t* start, size_t length )
+{
+  assert( start >= m_start );
+  assert( start + length <= m_mark );
+
+  return Data( IntrusivePtr<BufferBase>( this ), start, length );
 }

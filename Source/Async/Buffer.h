@@ -4,7 +4,6 @@
 #include "Async/BufferBase.h"
 #include "Async/Data.h"
 #include "Async/IntrusivePtr.h"
-#include <assert.h>
 #include <stdint.h>
 
 class Buffer;
@@ -43,14 +42,6 @@ private:
   uint8_t* m_mark;
   uint8_t* m_end;
 };
-
-inline Data Buffer::Slice( const uint8_t* start, size_t length )
-{
-  assert( start >= m_start );
-  assert( start + length <= m_mark );
-
-  return Data( IntrusivePtr<BufferBase>( this ), start, length );
-}
 
 inline size_t Buffer::Write( const Data& data )
 {

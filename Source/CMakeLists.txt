@@ -1,6 +1,8 @@
 add_library(async STATIC
   Async/Buffer.cpp
   Async/Data.cpp
+  Async/Error.cpp
+  Async/EventEmitter.cpp
 )
 
 target_link_libraries(async PUBLIC uv)
