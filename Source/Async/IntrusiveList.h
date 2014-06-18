@@ -1,11 +1,14 @@
 #ifndef Async_IntrusiveList_h
 #define Async_IntrusiveList_h
 
-class IntrusiveListHook
+// An element in an IntrusiveList. It automatically removes itself in its
+// destructor.
+
+class IntrusiveListElement
 {
 public:
-  IntrusiveListHook();
-  ~IntrusiveListHook();
+  IntrusiveListElement();
+  ~IntrusiveListElement();
 
   bool IsConnected() const;
   void Disconnect();
@@ -13,12 +16,15 @@ public:
 private:
   friend class IntrusiveListBase;
 
-  IntrusiveListHook( const IntrusiveListHook& );
-  IntrusiveListHook& operator=( const IntrusiveListHook& );
+  IntrusiveListElement( const IntrusiveListElement& );
+  IntrusiveListElement& operator=( const IntrusiveListElement& );
 
-  IntrusiveListHook* m_prev;
-  IntrusiveListHook* m_next;
+  IntrusiveListElement* m_prev;
+  IntrusiveListElement* m_next;
 };
+
+// A list that relies on elements to inherit from IntrusiveListElement. This
+// allows it to add and remove elements without memory allocation.
 
 class IntrusiveListBase
 {
@@ -29,16 +35,16 @@ public:
   bool IsEmpty() const;
 
   // Pops an element from the beginning of this list.
-  IntrusiveListHook* Pop();
+  IntrusiveListElement* Pop();
 
   // Appends an element to the end of this list.
-  void Append( IntrusiveListHook& element );
+  void Append( IntrusiveListElement& element );
 
   // Moves the contents of 'list' to this list at the beginning of the list.
   void Prepend( IntrusiveListBase& list );
 
 protected:
-  IntrusiveListHook m_sentinel;
+  IntrusiveListElement m_sentinel;
 };
 
 template <class T>

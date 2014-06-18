@@ -1,20 +1,20 @@
 #include "IntrusiveList.h"
 
-IntrusiveListHook::IntrusiveListHook() : m_prev( 0 ), m_next( 0 )
+IntrusiveListElement::IntrusiveListElement() : m_prev( 0 ), m_next( 0 )
 {
 }
 
-IntrusiveListHook::~IntrusiveListHook()
+IntrusiveListElement::~IntrusiveListElement()
 {
   Disconnect();
 }
 
-bool IntrusiveListHook::IsConnected() const
+bool IntrusiveListElement::IsConnected() const
 {
   return m_prev && m_next;
 }
 
-void IntrusiveListHook::Disconnect()
+void IntrusiveListElement::Disconnect()
 {
   if ( IsConnected() )
   {
@@ -45,19 +45,19 @@ bool IntrusiveListBase::IsEmpty() const
   return m_sentinel.m_next == &m_sentinel;
 }
 
-IntrusiveListHook* IntrusiveListBase::Pop()
+IntrusiveListElement* IntrusiveListBase::Pop()
 {
   if ( IsEmpty() )
     return 0;
 
-  IntrusiveListHook* element = m_sentinel.m_next;
+  IntrusiveListElement* element = m_sentinel.m_next;
   element->Disconnect();
   return element;
 }
 
-void IntrusiveListBase::Append( IntrusiveListHook& element )
+void IntrusiveListBase::Append( IntrusiveListElement& element )
 {
-  IntrusiveListHook* after = m_sentinel.m_prev;
+  IntrusiveListElement* after = m_sentinel.m_prev;
 
   element.m_prev = after;
   element.m_next = after->m_next;
@@ -71,10 +71,10 @@ void IntrusiveListBase::Prepend( IntrusiveListBase& other )
   if ( other.IsEmpty() )
     return;
 
-  IntrusiveListHook* otherHead = other.m_sentinel.m_next;
-  IntrusiveListHook* otherTail = other.m_sentinel.m_prev;
+  IntrusiveListElement* otherHead = other.m_sentinel.m_next;
+  IntrusiveListElement* otherTail = other.m_sentinel.m_prev;
 
-  IntrusiveListHook* myHead = m_sentinel.m_next;
+  IntrusiveListElement* myHead = m_sentinel.m_next;
 
   // Connect our sentinel with the head of the other list.
 

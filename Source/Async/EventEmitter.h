@@ -5,7 +5,7 @@
 
 typedef void (*EventCallback)( void* data );
 
-class EventListener : public IntrusiveListHook
+class EventListener : public IntrusiveListElement
 {
 public:
   EventListener( void* data, EventCallback cb );
