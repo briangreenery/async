@@ -70,10 +70,24 @@ void EventEmitter::AddListener( EventListener& listener )
 
 void EventEmitter::Emit()
 {
-  while ( m_sentinel.m_next != &m_sentinel )
+  EventListener thisTime( 0, IgnoreNotification );
+
+  thisTime.m_prev = m_sentinel.m_prev;
+  thisTime.m_next = m_sentinel.m_next;
+
+  thisTime.m_prev->m_next = &thisTime;
+  thisTime.m_next->m_prev = &thisTime;
+
+  m_sentinel.m_prev = &m_sentinel;
+  m_sentinel.m_next = &m_sentinel;
+
+  while ( thisTime.m_next != &thisTime )
   {
-    EventListener* listener = m_sentinel.m_next;
+    EventListener* listener = thisTime.m_next;
+
     listener->Disconnect();
+    AddListener( *listener );
+
     listener->Notify();
   }
 }

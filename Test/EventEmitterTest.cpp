@@ -142,8 +142,8 @@ static void AddListener( void* data )
 
 TEST( EventEmitterTest, ListenersAddedDuringEmitAreNotNotified )
 {
-  // In this test, 'adder' adds 'listener' during emitter.Emit(). It's added
-  // after emitter.Emit() is called though, and should not be notified.
+  // In this test, 'adder' adds 'listener' during emitter.Emit(). Since it's
+  // added after emitter.Emit() is called it should not be notified.
 
   EventEmitter emitter;
 
@@ -173,24 +173,28 @@ static void TrackOrder( void* data )
 
 TEST( EventEmitterTest, ListenersNotifiedInOrder )
 {
-  // In this test, 'listenerA' adds 'listenerB' during emitter.Emit().
-  // Afterwards, we emit again to make sure that 'listenerA' is still notified
-  // before 'listenerB'.
+  // In this test 'listenerA' adds 'listenerC' during emitter.Emit().
+  // Afterwards, we emit again to make sure that 'listenerA' is notified before
+  // 'listenerB', which is notified before 'listenerC'.
 
   EventEmitter emitter;
 
   std::vector<std::string> order;
 
+  OrderTracker trackerC = { &order, "C" };
+  EventListener listenerC( &trackerC, TrackOrder );
+
+  EmitterListener fixture = { &emitter, &listenerC };
+  EventListener listenerA( &fixture, AddListener );
+
   OrderTracker trackerB = { &order, "B" };
   EventListener listenerB( &trackerB, TrackOrder );
 
-  EmitterListener fixture = { &emitter, &listenerB };
-  EventListener listenerA( &fixture, AddListener );
-
   emitter.AddListener( listenerA );
+  emitter.AddListener( listenerB );
 
   emitter.Emit();
-  ASSERT_TRUE( order.empty() );
+  order.clear();
 
   OrderTracker trackerA = { &order, "A" };
   listenerA.SetCallback( &trackerA, TrackOrder );
@@ -200,6 +204,7 @@ TEST( EventEmitterTest, ListenersNotifiedInOrder )
   std::vector<std::string> expected;
   expected.push_back( "A" );
   expected.push_back( "B" );
+  expected.push_back( "C" );
 
   ASSERT_EQ( expected, order );
 }
