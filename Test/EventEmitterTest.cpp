@@ -6,12 +6,33 @@ static void SetTrue( void* data )
   *static_cast<bool*>( data ) = true;
 }
 
+static void Increment( void* data )
+{
+  *static_cast<int*>( data ) += 1;
+}
+
 TEST( EventEmitterTest, EventListenerNotify )
 {
   bool wasNotified = false;
   EventListener listener( &wasNotified, SetTrue );
   listener.Notify();
   ASSERT_TRUE( wasNotified );
+}
+
+TEST( EventEmitterTest, SetCallback )
+{
+  int count1 = 0;
+  EventListener listener( &count1, Increment );
+
+  listener.Notify();
+
+  int count2 = 0;
+  listener.SetCallback( &count2, Increment );
+
+  listener.Notify();
+
+  ASSERT_EQ( 1, count1 );
+  ASSERT_EQ( 1, count2 );
 }
 
 TEST( EventEmitterTest, NotifyOneListener )
@@ -91,4 +112,94 @@ TEST( EventEmitterTest, ThrowsWhenAddedTwice )
   emitter.AddListener( listener );
 
   ASSERT_THROW( emitter.AddListener( listener ), std::exception );
+}
+
+TEST( EventEmitterTest, RearmsAutomatically )
+{
+  int count = 0;
+  EventListener listener( &count, Increment );
+
+  EventEmitter emitter;
+  emitter.AddListener( listener );
+
+  emitter.Emit();
+  emitter.Emit();
+
+  ASSERT_EQ( 2, count );
+}
+
+struct EmitterListener
+{
+  EventEmitter* emitter;
+  EventListener* listener;
+};
+
+static void AddListener( void* data )
+{
+  EmitterListener* fixture = static_cast<EmitterListener*>( data );
+  fixture->emitter->AddListener( *fixture->listener );
+}
+
+TEST( EventEmitterTest, ListenersAddedDuringEmitAreNotNotified )
+{
+  // In this test, 'adder' adds 'listener' during emitter.Emit(). It's added
+  // after emitter.Emit() is called though, and should not be notified.
+
+  EventEmitter emitter;
+
+  bool wasNotified;
+  EventListener listener( &wasNotified, SetTrue );
+
+  EmitterListener fixture = { &emitter, &listener };
+  EventListener adder( &fixture, AddListener );
+
+  emitter.AddListener( adder );
+  emitter.Emit();
+
+  ASSERT_FALSE( wasNotified );
+}
+
+struct OrderTracker
+{
+  std::vector<std::string>* order;
+  std::string id;
+};
+
+static void TrackOrder( void* data )
+{
+  OrderTracker* fixture = static_cast<OrderTracker*>( data );
+  fixture->order->push_back( fixture->id );
+}
+
+TEST( EventEmitterTest, ListenersNotifiedInOrder )
+{
+  // In this test, 'listenerA' adds 'listenerB' during emitter.Emit().
+  // Afterwards, we emit again to make sure that 'listenerA' is still notified
+  // before 'listenerB'.
+
+  EventEmitter emitter;
+
+  std::vector<std::string> order;
+
+  OrderTracker trackerB = { &order, "B" };
+  EventListener listenerB( &trackerB, TrackOrder );
+
+  EmitterListener fixture = { &emitter, &listenerB };
+  EventListener listenerA( &fixture, AddListener );
+
+  emitter.AddListener( listenerA );
+
+  emitter.Emit();
+  ASSERT_TRUE( order.empty() );
+
+  OrderTracker trackerA = { &order, "A" };
+  listenerA.SetCallback( &trackerA, TrackOrder );
+
+  emitter.Emit();
+
+  std::vector<std::string> expected;
+  expected.push_back( "A" );
+  expected.push_back( "B" );
+
+  ASSERT_EQ( expected, order );
 }

@@ -32,6 +32,12 @@ void EventListener::Disconnect()
   m_next = 0;
 }
 
+void EventListener::SetCallback( void* data, EventCallback cb )
+{
+  m_data = data;
+  m_cb = cb;
+}
+
 EventEmitter::EventEmitter()
   : m_sentinel( 0, IgnoreNotification )
 {

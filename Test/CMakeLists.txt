@@ -10,6 +10,6 @@ target_link_libraries(runtests async gtest)
 
 add_custom_target(test
   DEPENDS runtests
-  COMMAND runtests
+  COMMAND runtests --gtest_color=yes
   COMMAND ${CMAKE_COMMAND} -E echo 'ALL TESTS PASSED'
 )

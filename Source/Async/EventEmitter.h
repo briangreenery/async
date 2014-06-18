@@ -12,8 +12,13 @@ public:
   void Notify();
   void Disconnect();
 
+  void SetCallback( void* data, EventCallback cb );
+
 private:
   friend class EventEmitter;
+
+  EventListener( const EventListener& );
+  EventListener& operator=( const EventListener& );
 
   EventListener* m_prev;
   EventListener* m_next;
