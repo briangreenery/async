@@ -53,8 +53,6 @@ TEST( IntrusiveListTest, ElementDestructorDisconnects )
   ASSERT_TRUE( list.IsEmpty() );
 }
 
-// prepend something to nothing, something to something, 
-
 TEST( IntrusiveListTest, PrependEmptyToEmpty )
 {
   IntrusiveListBase a;
