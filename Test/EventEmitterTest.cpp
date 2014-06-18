@@ -89,7 +89,7 @@ static void DisconnectListener( void* data )
   static_cast<EventListener*>( data )->Disconnect();
 }
 
-TEST( EventEmitterTest, DisconnectDuringNotify )
+TEST( EventEmitterTest, DisconnectOtherDuringNotify )
 {
   bool wasNotified;
   EventListener normalListener( &wasNotified, SetTrue );
@@ -101,6 +101,17 @@ TEST( EventEmitterTest, DisconnectDuringNotify )
 
   emitter.Emit();
   ASSERT_FALSE( wasNotified );
+}
+
+TEST( EventEmitterTest, DisconnectSelfDuringNotify )
+{
+  EventListener listener( &listener, DisconnectListener );
+
+  EventEmitter emitter;
+  emitter.AddListener( listener );
+
+  emitter.Emit();
+  ASSERT_FALSE( listener.IsConnected() );
 }
 
 TEST( EventEmitterTest, ThrowsWhenAddedTwice )

@@ -68,16 +68,25 @@ void IntrusiveListBase::Append( IntrusiveListHook& element )
 
 void IntrusiveListBase::Prepend( IntrusiveListBase& other )
 {
+  if ( other.IsEmpty() )
+    return;
+
   IntrusiveListHook* otherHead = other.m_sentinel.m_next;
   IntrusiveListHook* otherTail = other.m_sentinel.m_prev;
 
   IntrusiveListHook* myHead = m_sentinel.m_next;
 
-  otherTail->m_next = myHead;
-  myHead->m_prev = otherTail;
+  // Connect our sentinel with the head of the other list.
 
   m_sentinel.m_next = otherHead;
   otherHead->m_prev = &m_sentinel;
+
+  // Connect the tail of the other list with our head.
+
+  otherTail->m_next = myHead;
+  myHead->m_prev = otherTail;
+
+  // Reset the other sentinel so it's a valid empty list.
 
   other.m_sentinel.m_prev = &other.m_sentinel;
   other.m_sentinel.m_next = &other.m_sentinel;

@@ -14,12 +14,6 @@ public:
   void SetCallback( void* data, EventCallback cb );
 
 private:
-  EventListener( const EventListener& );
-  EventListener& operator=( const EventListener& );
-
-  EventListener* m_prev;
-  EventListener* m_next;
-
   void* m_data;
   EventCallback m_cb;
 };
