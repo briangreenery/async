@@ -174,8 +174,8 @@ static void TrackOrder( void* data )
 TEST( EventEmitterTest, ListenersNotifiedInOrder )
 {
   // In this test 'listenerA' adds 'listenerC' during emitter.Emit().
-  // Afterwards, we emit again to make sure that 'listenerA' is notified before
-  // 'listenerB', which is notified before 'listenerC'.
+  // Afterwards, we Emit() again to make sure that 'listenerA' is notified
+  // before 'listenerB', which is notified before 'listenerC'.
 
   EventEmitter emitter;
 

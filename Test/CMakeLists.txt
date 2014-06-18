@@ -6,6 +6,12 @@ add_executable(runtests EXCLUDE_FROM_ALL
   IntrusivePtrTest.cpp
 )
 
+set(COMPILE_OPTIONS
+  -fcolor-diagnostics
+  -Wall
+)
+
+target_compile_options(runtests PRIVATE ${COMPILE_OPTIONS})
 target_link_libraries(runtests async gtest)
 
 add_custom_target(test

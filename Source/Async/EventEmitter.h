@@ -1,22 +1,19 @@
 #ifndef Async_EventEmitter_h
 #define Async_EventEmitter_h
 
+#include "Async/IntrusiveList.h"
+
 typedef void (*EventCallback)( void* data );
 
-class EventListener
+class EventListener : public IntrusiveListHook
 {
 public:
   EventListener( void* data, EventCallback cb );
-  ~EventListener();
 
   void Notify();
-  void Disconnect();
-
   void SetCallback( void* data, EventCallback cb );
 
 private:
-  friend class EventEmitter;
-
   EventListener( const EventListener& );
   EventListener& operator=( const EventListener& );
 
@@ -30,17 +27,11 @@ private:
 class EventEmitter
 {
 public:
-  EventEmitter();
-  ~EventEmitter();
-
   void Emit();
   void AddListener( EventListener& );
 
 private:
-  EventEmitter( const EventEmitter& );
-  EventEmitter& operator=( const EventEmitter& );
-
-  EventListener m_sentinel;
+  IntrusiveList<EventListener> m_listeners;
 };
 
 #endif
