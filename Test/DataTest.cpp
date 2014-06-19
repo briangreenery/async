@@ -34,3 +34,25 @@ TEST( DataTest, Slice )
   ASSERT_EQ( data, data.Slice( data.Start(), data.Length() ) );
   ASSERT_EQ( Data( "lo" ), data.Slice( data.Start() + 3, 2 ) );
 }
+
+TEST( DataTest, CoalesceNeighbors )
+{
+  Data helloworld( "Hello, world!" );
+
+  Data hello = helloworld.Slice( helloworld.Start(), 7 );
+  Data world = helloworld.Slice( helloworld.Start() + 7, 6 );
+
+  ASSERT_TRUE( hello.Coalesce( world ) );
+  ASSERT_TRUE( helloworld == hello );
+}
+
+TEST( DataTest, CoalesceUnrelated )
+{
+  Data helloworld( "Hello, world!" );
+
+  Data hello( "Hello, " );
+  Data world( "world!" );
+
+  ASSERT_FALSE( hello.Coalesce( world ) );
+  ASSERT_FALSE( helloworld == hello );
+}
