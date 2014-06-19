@@ -57,6 +57,8 @@ IntrusiveListElement* IntrusiveListBase::Pop()
 
 void IntrusiveListBase::Append( IntrusiveListElement& element )
 {
+  element.Disconnect();
+
   IntrusiveListElement* after = m_sentinel.m_prev;
 
   element.m_prev = after;
