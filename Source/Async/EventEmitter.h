@@ -10,6 +10,9 @@ class EventListener : public IntrusiveListElement
 public:
   EventListener( void* data, EventCallback cb );
 
+  template <class T>
+  EventListener( T* object, void ( T::*memberFn )() );
+
   void Notify();
   void SetCallback( void* data, EventCallback cb );
 

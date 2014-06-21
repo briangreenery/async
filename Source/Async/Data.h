@@ -23,6 +23,7 @@ public:
 
   const uint8_t* Start() const;
   size_t Length() const;
+  bool IsEmpty() const;
 
   Data Slice( const uint8_t* start, size_t length ) const;
 
@@ -49,6 +50,11 @@ inline const uint8_t* Data::Start() const
 inline size_t Data::Length() const
 {
   return m_length;
+}
+
+inline bool Data::IsEmpty() const
+{
+  return m_length == 0;
 }
 
 bool operator==( const Data&, const Data& );

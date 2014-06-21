@@ -2,6 +2,14 @@
 #include "Async/Data.h"
 #include <gtest/gtest.h>
 
+TEST( DataTest, EmptyData )
+{
+  Data data;
+
+  ASSERT_EQ( 0, data.Length() );
+  ASSERT_TRUE( data.IsEmpty() );
+}
+
 TEST( DataTest, ManagesRefCount )
 {
   BufferPtr buffer = Buffer::New( 0 );

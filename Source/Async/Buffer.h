@@ -19,8 +19,6 @@ class Buffer : public BufferBase
 public:
   static BufferPtr New( size_t length );
 
-  Data Slice( const uint8_t* start, size_t length );
-
   size_t Refs() const;
 
   uint8_t* Start() const;
@@ -32,6 +30,9 @@ public:
 
   size_t Write( const uint8_t* data, size_t length );
   size_t Write( const Data& );
+
+  Data Slice( const uint8_t* start, size_t length );
+  Data Advance( size_t amount );
 
 private:
   Buffer( const Buffer& );

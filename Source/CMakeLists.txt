@@ -5,6 +5,8 @@ add_library(async STATIC
   Async/Error.cpp
   Async/EventEmitter.cpp
   Async/IntrusiveList.cpp
+  Async/UVStream.cpp
+  Async/UVTTY.cpp
 )
 
 set(COMPILE_OPTIONS

@@ -71,3 +71,41 @@ TEST( IntrusivePtrTest, DestructorReleases )
   ASSERT_EQ( 0, bearmo.refs );
   ASSERT_TRUE( bearmo.released );
 }
+
+TEST( IntrusivePtrTest, GetReturnsPointer )
+{
+  IntrusivePtr<Bearmo> nullPtr;
+  ASSERT_EQ( 0, nullPtr.Get() );
+
+  Bearmo bearmo;
+  IntrusivePtr<Bearmo> validPtr( &bearmo );
+  ASSERT_EQ( &bearmo, validPtr.Get() );
+}
+
+TEST( IntrusivePtrTest, BoolCast )
+{
+  IntrusivePtr<Bearmo> nullPtr;
+
+  if ( nullPtr )
+    FAIL();
+  else
+    SUCCEED();
+
+  if ( !nullPtr )
+    SUCCEED();
+  else
+    FAIL();
+
+  Bearmo bearmo;
+  IntrusivePtr<Bearmo> validPtr( &bearmo );
+
+  if ( validPtr )
+    SUCCEED();
+  else
+    FAIL();
+
+  if ( !validPtr )
+    FAIL();
+  else
+    SUCCEED();
+}

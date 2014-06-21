@@ -22,7 +22,7 @@ BufferPtr Buffer::New( size_t length )
 
 size_t Buffer::Write( const uint8_t* data, size_t length )
 {
-  size_t amount = std::min<size_t>( length, FreeLength() );
+  size_t amount = std::min( length, FreeLength() );
   memcpy( m_mark, data, amount );
   m_mark += amount;
   return amount;
@@ -34,4 +34,12 @@ Data Buffer::Slice( const uint8_t* start, size_t length )
   assert( start + length <= m_mark );
 
   return Data( IntrusivePtr<BufferBase>( this ), start, length );
+}
+
+Data Buffer::Advance( size_t amount )
+{
+  amount = std::min( amount, FreeLength() );
+  const uint8_t* oldMark = m_mark;
+  m_mark += amount;
+  return Data( IntrusivePtr<BufferBase>( this ), oldMark, amount );
 }
