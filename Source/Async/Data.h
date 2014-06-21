@@ -12,6 +12,8 @@
 class Data
 {
 public:
+  Data();
+
   Data( const IntrusivePtr<BufferBase>& buffer,
         const uint8_t* start,
         size_t length );

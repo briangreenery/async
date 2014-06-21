@@ -1,6 +1,7 @@
 add_library(async STATIC
   Async/Buffer.cpp
   Async/Data.cpp
+  Async/DataPipe.cpp
   Async/Error.cpp
   Async/EventEmitter.cpp
   Async/IntrusiveList.cpp

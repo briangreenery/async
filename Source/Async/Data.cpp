@@ -2,6 +2,10 @@
 #include <assert.h>
 #include <string.h>
 
+Data::Data() : m_start( 0 ), m_length( 0 )
+{
+}
+
 Data::Data( const IntrusivePtr<BufferBase>& buffer,
             const uint8_t* start,
             size_t length )

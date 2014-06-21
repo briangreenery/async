@@ -2,12 +2,17 @@
 #define Async_DataPipe_h
 
 #include "Async/Data.h"
+#include "Async/EventEmitter.h"
+#include "Async/IntrusivePtr.h"
 #include <list>
+
+class DataPipe;
+typedef IntrusivePtr<DataPipe> DataPipePtr;
 
 class DataPipe
 {
 public:
-  DataPipe();
+  static DataPipePtr New();
 
   void Write( const Data& );
   void OnWriteable( EventListener& );
@@ -16,26 +21,32 @@ public:
   void OnReadable( EventListener& );
 
   bool IsFull() const;
-  void IsEmpty() const;
+  bool IsEmpty() const;
 
 private:
+  friend void IntrusivePtrAddRef( DataPipe* );
+  friend void IntrusivePtrRelease( DataPipe* );
+
+  DataPipe();
+
+  DataPipe( const DataPipe& );
+  DataPipe& operator=( DataPipe& );
+
+  size_t m_refs;
   std::list<Data> m_queue;
-
-  bool m_wantRead;
-  bool m_wantWrite;
-
   EventEmitter m_readable;
   EventEmitter m_writeable;
 };
 
-inline bool DataPipe::IsFull() const
+inline void IntrusivePtrAddRef( DataPipe* pipe )
 {
-  return m_queue.size() < 16;
+  pipe->m_refs++;
 }
 
-inline bool DataPipe::IsEmpty() const
+inline void IntrusivePtrRelease( DataPipe* pipe )
 {
-  return m_queue.empty();
+  if ( --pipe->m_refs == 0 )
+    delete pipe;
 }
 
 #endif

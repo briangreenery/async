@@ -11,9 +11,8 @@ class Data;
 typedef IntrusivePtr<Buffer> BufferPtr;
 
 // A Buffer is a writeable chunk of memory. It can only be accessed through the
-// reference counted BufferPtr. This is so that we can pipe data along without
-// copying it, and have it be freed automatically when it's no longer
-// referenced.
+// reference counted BufferPtr. This is so that we can pipe data without copying
+// it, and have it be freed automatically when it's no longer referenced.
 
 class Buffer : public BufferBase
 {

@@ -1,6 +1,7 @@
 add_executable(runtests EXCLUDE_FROM_ALL
   BufferTest.cpp
   DataTest.cpp
+  DataPipeTest.cpp
   ErrorTest.cpp
   EventEmitterTest.cpp
   IntrusiveListTest.cpp
