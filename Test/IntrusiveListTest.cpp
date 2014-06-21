@@ -15,6 +15,19 @@ TEST( IntrusiveListTest, AppendTest )
   ASSERT_TRUE( element.IsConnected() );
 }
 
+TEST( IntrusiveListTest, AppendShouldDisconnect )
+{
+  IntrusiveListBase list1;
+  IntrusiveListBase list2;
+
+  IntrusiveListElement element;
+  list1.Append( element );
+  list2.Append( element );
+
+  ASSERT_TRUE( list1.IsEmpty() );
+  ASSERT_FALSE( list2.IsEmpty() );
+}
+
 TEST( IntrusiveListTest, PoppedInOrder )
 {
   IntrusiveListBase list;
