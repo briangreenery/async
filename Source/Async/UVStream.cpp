@@ -81,9 +81,6 @@ void UVStream::StopReading()
   }
 }
 
-#include <stdlib.h>
-#include <string>
-
 uv_buf_t UVStream::OnAlloc()
 {
   if ( !m_readBuffer || m_readBuffer->FreeLength() == 0 )
