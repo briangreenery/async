@@ -163,6 +163,13 @@ void UVStream::OnWriteDone( int status )
   }
 }
 
+void UVStream::Pipe( UVStream& output )
+{
+  DataPipePtr pipe = DataPipe::New();
+  ReadTo( pipe );
+  output.WriteFrom( pipe );
+}
+
 void UVStream::OnReadToWriteable( void* data )
 {
   static_cast<UVStream*>( data )->OnReadToWriteable();

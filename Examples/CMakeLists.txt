@@ -4,6 +4,6 @@ macro(add_example name file)
   list(APPEND EXAMPLES ${name})
 endmacro()
 
-add_example(uvcat Cat.cpp)
+add_example(cat Cat.cpp)
 
 add_custom_target(examples DEPENDS ${EXAMPLES})

@@ -20,6 +20,8 @@ public:
   void OnWriteError( EventListener& );
   uv_err_t LastWriteError() const;
 
+  void Pipe( UVStream& );
+
 private:
   UVStream( const UVStream& );
   UVStream& operator=( const UVStream& );
