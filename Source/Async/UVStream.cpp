@@ -81,9 +81,12 @@ void UVStream::StopReading()
   }
 }
 
+#include <stdlib.h>
+#include <string>
+
 uv_buf_t UVStream::OnAlloc()
 {
-  if ( !m_readBuffer )
+  if ( !m_readBuffer || m_readBuffer->FreeLength() == 0 )
     m_readBuffer = Buffer::New( 4096 );
 
   uv_buf_t buf;
@@ -100,7 +103,7 @@ void UVStream::OnReadDone( ssize_t numRead )
 
     if ( m_readTo->IsFull() )
     {
-      m_readTo->OnReadable( m_readToWriteable );
+      m_readTo->OnWriteable( m_readToWriteable );
       StopReading();
     }
   }
