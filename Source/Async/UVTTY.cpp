@@ -24,14 +24,3 @@ UVTTY::UVTTY( uv_loop_t* loop, uv_file fd, int readable )
   if ( uv_tty_init( loop, &m_tty, fd, readable ) )
     throw Error( "uv_tty_init" );
 }
-
-static void Destroy( uv_handle_t* handle )
-{
-  UVTTY* tty = static_cast<UVTTY*>( handle->data );
-  delete tty;
-}
-
-void UVTTY::Close()
-{
-  uv_close( reinterpret_cast<uv_handle_t*>( &m_tty ), Destroy );
-}

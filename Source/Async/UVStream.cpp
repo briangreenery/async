@@ -1,7 +1,8 @@
 #include "UVStream.h"
 
 UVStream::UVStream( uv_stream_t* stream )
-  : m_readStream( stream )
+  : UVHandle( reinterpret_cast<uv_handle_t*>( stream ) )
+  , m_readStream( stream )
   , m_writeStream( stream )
 {
 }

@@ -5,6 +5,7 @@ add_library(async STATIC
   Async/Error.cpp
   Async/EventEmitter.cpp
   Async/IntrusiveList.cpp
+  Async/UVHandle.cpp
   Async/UVReadStream.cpp
   Async/UVStream.cpp
   Async/UVTTY.cpp
