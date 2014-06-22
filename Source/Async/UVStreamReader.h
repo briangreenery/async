@@ -1,22 +1,22 @@
-#ifndef Async_UVReadStream_h
-#define Async_UVReadStream_h
+#ifndef Async_UVStreamReader_h
+#define Async_UVStreamReader_h
 
 #include "Async/Buffer.h"
 #include "Async/DataPipe.h"
 #include <uv.h>
 
-class UVReadStream
+class UVStreamReader
 {
 public:
-  explicit UVReadStream( uv_stream_t* );
+  explicit UVStreamReader( uv_stream_t* );
 
   void Pipe( const DataPipePtr& );
   void OnEnd( EventListener& );
   void OnError( EventListener& );
 
 private:
-  UVReadStream( const UVReadStream& );
-  UVReadStream& operator=( const UVReadStream& );
+  UVStreamReader( const UVStreamReader& );
+  UVStreamReader& operator=( const UVStreamReader& );
 
   void Read();
   void Pause();

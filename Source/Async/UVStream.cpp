@@ -2,17 +2,17 @@
 
 UVStream::UVStream( uv_stream_t* stream )
   : UVHandle( reinterpret_cast<uv_handle_t*>( stream ) )
-  , m_readStream( stream )
-  , m_writeStream( stream )
+  , m_reader( stream )
+  , m_writer( stream )
 {
 }
 
-UVReadStream& UVStream::ReadStream()
+UVStreamReader& UVStream::Reader()
 {
-  return m_readStream;
+  return m_reader;
 }
 
-UVWriteStream& UVStream::WriteStream()
+UVStreamWriter& UVStream::Writer()
 {
-  return m_writeStream;
+  return m_writer;
 }

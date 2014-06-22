@@ -6,10 +6,10 @@ add_library(async STATIC
   Async/EventEmitter.cpp
   Async/IntrusiveList.cpp
   Async/UVHandle.cpp
-  Async/UVReadStream.cpp
   Async/UVStream.cpp
+  Async/UVStreamReader.cpp
+  Async/UVStreamWriter.cpp
   Async/UVTTY.cpp
-  Async/UVWriteStream.cpp
 )
 
 set(COMPILE_OPTIONS

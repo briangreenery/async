@@ -9,8 +9,8 @@ int main()
 
   DataPipePtr pipe = DataPipe::New();
 
-  stdIn->ReadStream().Pipe( pipe );
-  stdOut->WriteStream().Pipe( pipe );
+  stdIn->Reader().Pipe( pipe );
+  stdOut->Writer().Pipe( pipe );
 
   uv_run( loop, UV_RUN_DEFAULT );
   return 0;

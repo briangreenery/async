@@ -1,30 +1,30 @@
-#include "UVWriteStream.h"
+#include "UVStreamWriter.h"
 #include <assert.h>
 
-UVWriteStream::UVWriteStream( uv_stream_t* stream )
+UVStreamWriter::UVStreamWriter( uv_stream_t* stream )
   : m_stream( stream )
   , m_pipeReadable( this, OnPipeReadable )
 {
   m_req.data = this;
 }
 
-void UVWriteStream::Pipe( const DataPipePtr& pipe )
+void UVStreamWriter::Pipe( const DataPipePtr& pipe )
 {
   m_pipe = pipe;
   Write();
 }
 
-void UVWriteStream::OnFinished( EventListener& listener )
+void UVStreamWriter::OnFinished( EventListener& listener )
 {
   m_finished.AddListener( listener );
 }
 
-void UVWriteStream::OnError( EventListener& listener )
+void UVStreamWriter::OnError( EventListener& listener )
 {
   m_error.AddListener( listener );
 }
 
-void UVWriteStream::Write()
+void UVStreamWriter::Write()
 {
   if ( m_pipe->IsEnd() )
   {
@@ -48,7 +48,7 @@ void UVWriteStream::Write()
   }
 }
 
-void UVWriteStream::OnWriteComplete( int status )
+void UVStreamWriter::OnWriteComplete( int status )
 {
   m_data = Data();
 
@@ -58,17 +58,17 @@ void UVWriteStream::OnWriteComplete( int status )
     Write();
 }
 
-void UVWriteStream::OnPipeReadable()
+void UVStreamWriter::OnPipeReadable()
 {
   m_pipeReadable.Disconnect();
   Write();
 }
 
-void UVWriteStream::OnWriteComplete( uv_write_t* req, int status )
+void UVStreamWriter::OnWriteComplete( uv_write_t* req, int status )
 {
   try
   {
-    static_cast<UVWriteStream*>( req->data )->OnWriteComplete( status );
+    static_cast<UVStreamWriter*>( req->data )->OnWriteComplete( status );
   }
   catch ( ... )
   {
@@ -77,7 +77,7 @@ void UVWriteStream::OnWriteComplete( uv_write_t* req, int status )
   }
 }
 
-void UVWriteStream::OnPipeReadable( void* data )
+void UVStreamWriter::OnPipeReadable( void* data )
 {
-  static_cast<UVWriteStream*>( data )->OnPipeReadable();
+  static_cast<UVStreamWriter*>( data )->OnPipeReadable();
 }

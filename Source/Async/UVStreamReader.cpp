@@ -1,42 +1,42 @@
-#include "UVReadStream.h"
+#include "UVStreamReader.h"
 #include "Async/UVStream.h"
 #include <assert.h>
 
-UVReadStream::UVReadStream( uv_stream_t* stream )
+UVStreamReader::UVStreamReader( uv_stream_t* stream )
   : m_stream( stream )
   , m_pipeWritable( this, OnPipeWritable )
 {
 }
 
-void UVReadStream::Pipe( const DataPipePtr& pipe )
+void UVStreamReader::Pipe( const DataPipePtr& pipe )
 {
   m_pipe = pipe;
   Read();
 }
 
-void UVReadStream::OnEnd( EventListener& listener )
+void UVStreamReader::OnEnd( EventListener& listener )
 {
   m_end.AddListener( listener );
 }
 
-void UVReadStream::OnError( EventListener& listener )
+void UVStreamReader::OnError( EventListener& listener )
 {
   m_error.AddListener( listener );
 }
 
-void UVReadStream::Read()
+void UVStreamReader::Read()
 {
   if ( uv_read_start( m_stream, OnAlloc, OnReadComplete ) )
     m_error.Emit();
 }
 
-void UVReadStream::Pause()
+void UVStreamReader::Pause()
 {
   if ( uv_read_stop( m_stream ) )
     m_error.Emit();
 }
 
-uv_buf_t UVReadStream::OnAlloc()
+uv_buf_t UVStreamReader::OnAlloc()
 {
   if ( !m_buffer || m_buffer->FreeLength() == 0 )
     m_buffer = Buffer::New( 4096 );
@@ -47,7 +47,7 @@ uv_buf_t UVReadStream::OnAlloc()
   return buf;
 }
 
-void UVReadStream::OnReadComplete( ssize_t numRead )
+void UVStreamReader::OnReadComplete( ssize_t numRead )
 {
   if ( numRead > 0 )
   {
@@ -75,18 +75,18 @@ void UVReadStream::OnReadComplete( ssize_t numRead )
   }
 }
 
-void UVReadStream::OnPipeWritable()
+void UVStreamReader::OnPipeWritable()
 {
   m_pipeWritable.Disconnect();
   Read();
 }
 
-uv_buf_t UVReadStream::OnAlloc( uv_handle_t* handle, size_t )
+uv_buf_t UVStreamReader::OnAlloc( uv_handle_t* handle, size_t )
 {
   try
   {
     UVStream& stream = *static_cast<UVStream*>( handle->data );
-    return stream.ReadStream().OnAlloc();
+    return stream.Reader().OnAlloc();
   }
   catch ( ... )
   {
@@ -95,14 +95,14 @@ uv_buf_t UVReadStream::OnAlloc( uv_handle_t* handle, size_t )
   }
 }
 
-void UVReadStream::OnReadComplete( uv_stream_t* handle,
+void UVStreamReader::OnReadComplete( uv_stream_t* handle,
                                    ssize_t numRead,
                                    uv_buf_t )
 {
   try
   {
     UVStream& stream = *static_cast<UVStream*>( handle->data );
-    stream.ReadStream().OnReadComplete( numRead );
+    stream.Reader().OnReadComplete( numRead );
   }
   catch ( ... )
   {
@@ -111,7 +111,7 @@ void UVReadStream::OnReadComplete( uv_stream_t* handle,
   }
 }
 
-void UVReadStream::OnPipeWritable( void* data )
+void UVStreamReader::OnPipeWritable( void* data )
 {
-  static_cast<UVReadStream*>( data )->OnPipeWritable();
+  static_cast<UVStreamReader*>( data )->OnPipeWritable();
 }

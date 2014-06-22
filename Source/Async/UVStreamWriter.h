@@ -1,22 +1,22 @@
-#ifndef Async_UVWriteStream_h
-#define Async_UVWriteStream_h
+#ifndef Async_UVStreamWriter_h
+#define Async_UVStreamWriter_h
 
 #include "Async/DataPipe.h"
 #include "Async/EventEmitter.h"
 #include <uv.h>
 
-class UVWriteStream
+class UVStreamWriter
 {
 public:
-  explicit UVWriteStream( uv_stream_t* );
+  explicit UVStreamWriter( uv_stream_t* );
 
   void Pipe( const DataPipePtr& );
   void OnFinished( EventListener& );
   void OnError( EventListener& );
 
 private:
-  UVWriteStream( const UVWriteStream& );
-  UVWriteStream& operator=( const UVWriteStream& );
+  UVStreamWriter( const UVStreamWriter& );
+  UVStreamWriter& operator=( const UVStreamWriter& );
 
   void Write();
 
