@@ -3,8 +3,7 @@
 #include <assert.h>
 
 UVStreamReader::UVStreamReader( uv_stream_t* stream )
-  : m_stream( stream )
-  , m_pipeWritable( this, OnPipeWritable )
+  : m_stream( stream ), m_pipeWritable( this, OnPipeWritable )
 {
 }
 
@@ -96,8 +95,8 @@ uv_buf_t UVStreamReader::OnAlloc( uv_handle_t* handle, size_t )
 }
 
 void UVStreamReader::OnReadComplete( uv_stream_t* handle,
-                                   ssize_t numRead,
-                                   uv_buf_t )
+                                     ssize_t numRead,
+                                     uv_buf_t )
 {
   try
   {

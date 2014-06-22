@@ -2,8 +2,7 @@
 #include <assert.h>
 
 UVStreamWriter::UVStreamWriter( uv_stream_t* stream )
-  : m_stream( stream )
-  , m_pipeReadable( this, OnPipeReadable )
+  : m_stream( stream ), m_pipeReadable( this, OnPipeReadable )
 {
   m_req.data = this;
 }
