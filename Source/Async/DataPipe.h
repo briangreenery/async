@@ -14,13 +14,15 @@ class DataPipe
 public:
   static DataPipePtr New();
 
-  void Write( const Data& );
-  void OnWriteable( EventListener& );
-
   Data Read();
+  void Write( const Data& );
+  void WriteEnd();
+
+  void OnWritable( EventListener& );
   void OnReadable( EventListener& );
 
   bool IsFull() const;
+  bool IsEnd() const;
   bool IsEmpty() const;
 
 private:
@@ -33,9 +35,10 @@ private:
   DataPipe& operator=( DataPipe& );
 
   size_t m_refs;
+  bool m_ended;
   std::list<Data> m_queue;
   EventEmitter m_readable;
-  EventEmitter m_writeable;
+  EventEmitter m_writable;
 };
 
 inline void IntrusivePtrAddRef( DataPipe* pipe )

@@ -1,4 +1,5 @@
 #include "Async/DataPipe.h"
+#include "Async/Error.h"
 #include <gtest/gtest.h>
 
 TEST( DataPipeTest, NewPipeIsEmpty )
@@ -72,13 +73,13 @@ TEST( DataPipeTest, EmitsReadableWhenNotEmptyAnymore )
   ASSERT_FALSE( wasNotified );
 }
 
-TEST( DataPipeTest, EmitsWriteableWhenNotFullAnymore )
+TEST( DataPipeTest, EmitsWritableWhenNotFullAnymore )
 {
   DataPipePtr pipe = DataPipe::New();
 
   bool wasNotified = false;
   EventListener listener( &wasNotified, SetTrue );
-  pipe->OnWriteable( listener );
+  pipe->OnWritable( listener );
 
   for ( size_t i = 0; i < 8; i++ )
     pipe->Write( Data( "hello" ) );
@@ -88,4 +89,42 @@ TEST( DataPipeTest, EmitsWriteableWhenNotFullAnymore )
 
   pipe->Read();
   ASSERT_TRUE( wasNotified );
+}
+
+TEST( DataPipeTest, WriteDataAfterEndThrows )
+{
+  DataPipePtr pipe = DataPipe::New();
+  pipe->WriteEnd();
+  ASSERT_THROW( pipe->Write( Data( "hi" ) ), Error );
+}
+
+TEST( DataPipeTest, WriteEndAfterEndThrows )
+{
+  DataPipePtr pipe = DataPipe::New();
+  pipe->WriteEnd();
+  ASSERT_THROW( pipe->WriteEnd(), Error );
+}
+
+TEST( DataPipeTest, EmitsReadableOnEnd )
+{
+  DataPipePtr pipe = DataPipe::New();
+
+  bool wasNotified = false;
+  EventListener listener( &wasNotified, SetTrue );
+  pipe->OnReadable( listener );
+
+  pipe->WriteEnd();
+  ASSERT_TRUE( wasNotified );
+}
+
+TEST( DataPipeTest, IsEndReturnsFalseUntilAllDataRead )
+{
+  DataPipePtr pipe = DataPipe::New();
+
+  pipe->Write( Data( "hello" ) );
+  pipe->WriteEnd();
+
+  ASSERT_FALSE( pipe->IsEnd() );
+  pipe->Read();
+  ASSERT_TRUE( pipe->IsEnd() );
 }
