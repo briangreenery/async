@@ -13,6 +13,8 @@ static void OnConnection( void* )
   DataPipePtr pipe = DataPipe::New();
   client->Reader().Pipe( pipe );
   stdOut->Writer().Pipe( pipe );
+
+  listener = UVTCPSocketPtr();
 }
 
 int main( int argc, const char* argv[] )
