@@ -10,6 +10,8 @@ UVTCPSocketPtr UVTCPSocket::New( uv_loop_t* loop )
 UVTCPSocket::UVTCPSocket( uv_loop_t* loop )
   : UVStream( reinterpret_cast<uv_stream_t*>( &m_tcp ) )
 {
+  m_tcp.data = this;
+
   if ( uv_tcp_init( loop, &m_tcp ) )
     throw Error( "uv_tcp_init" );
 }
@@ -26,7 +28,7 @@ void UVTCPSocket::OnError( EventListener& listener )
 
 void UVTCPSocket::Listen( int port )
 {
-  Bind( uv_ip4_addr( "0.0.0.0", port ) );
+  Bind( uv_ip4_addr( "127.0.0.1", port ) );
   Listen();
 }
 

@@ -26,8 +26,9 @@ int main( int argc, const char* argv[] )
   uv_loop_t* loop = uv_loop_new();
 
   listener = UVTCPSocket::New( loop );
+  stdOut = UVTTY::NewStdOut( loop );
 
-  EventListener onConnection( listener.Get(), OnConnection );
+  EventListener onConnection( 0, OnConnection );
   listener->OnConnection( onConnection );
   listener->Listen( atoi( argv[1] ) );
 

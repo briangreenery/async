@@ -29,7 +29,7 @@ inline void IntrusivePtrAddRef( UVHandle* handle )
 
 inline void IntrusivePtrRelease( UVHandle* handle )
 {
-  if ( --handle->m_refs )
+  if ( --handle->m_refs == 0 )
     handle->Close();
 }
 
