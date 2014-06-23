@@ -14,7 +14,7 @@ static void OnConnection( void* )
   client->Reader().Pipe( pipe );
   stdOut->Writer().Pipe( pipe );
 
-  listener = UVTCPSocketPtr();
+  listener.Reset();
 }
 
 int main( int argc, const char* argv[] )

@@ -13,6 +13,7 @@ public:
   ~IntrusivePtr();
 
   T* Get() const;
+  void Reset();
 
   IntrusivePtr<T>& operator=( const IntrusivePtr<T>& );
 
@@ -20,10 +21,7 @@ public:
   T& operator*() const;
 
   typedef T* ( IntrusivePtr::*SafeBoolType )() const;
-  operator SafeBoolType() const
-  {
-    return m_t ? &IntrusivePtr::Get : 0;
-  }
+  operator SafeBoolType() const;
 
 private:
   T* m_t;
@@ -78,6 +76,15 @@ T* IntrusivePtr<T>::Get() const
 }
 
 template <class T>
+void IntrusivePtr<T>::Reset()
+{
+  if ( m_t )
+    IntrusivePtrRelease( m_t );
+
+  m_t = 0;
+}
+
+template <class T>
 T* IntrusivePtr<T>::operator->() const
 {
   return m_t;
@@ -87,6 +94,12 @@ template <class T>
 T& IntrusivePtr<T>::operator*() const
 {
   return *m_t;
+}
+
+template <class T>
+IntrusivePtr<T>::operator SafeBoolType() const
+{
+  return m_t ? &IntrusivePtr::Get : 0;
 }
 
 #endif

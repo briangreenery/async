@@ -82,6 +82,15 @@ TEST( IntrusivePtrTest, GetReturnsPointer )
   ASSERT_EQ( &bearmo, validPtr.Get() );
 }
 
+TEST( IntrusivePtrTest, ResetReleasesPointer )
+{
+  Bearmo bearmo;
+  IntrusivePtr<Bearmo> ptr( &bearmo );
+  ASSERT_FALSE( bearmo.released );
+  ptr.Reset();
+  ASSERT_TRUE( bearmo.released );
+}
+
 TEST( IntrusivePtrTest, BoolCast )
 {
   IntrusivePtr<Bearmo> nullPtr;
