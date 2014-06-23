@@ -5,5 +5,6 @@ macro(add_example name file)
 endmacro()
 
 add_example(cat Cat.cpp)
+add_example(nc NetCat.cpp)
 
 add_custom_target(examples DEPENDS ${EXAMPLES})

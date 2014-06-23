@@ -10,10 +10,14 @@ class UVStream : public UVHandle
 public:
   explicit UVStream( uv_stream_t* );
 
+  uv_stream_t* Stream() const;
+
   UVStreamReader& Reader();
   UVStreamWriter& Writer();
 
 private:
+  uv_stream_t* m_stream;
+
   UVStreamReader m_reader;
   UVStreamWriter m_writer;
 };

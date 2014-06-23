@@ -9,6 +9,7 @@ add_library(async STATIC
   Async/UVStream.cpp
   Async/UVStreamReader.cpp
   Async/UVStreamWriter.cpp
+  Async/UVTCPSocket.cpp
   Async/UVTTY.cpp
 )
 
