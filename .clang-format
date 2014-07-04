@@ -17,7 +17,7 @@ ColumnLimit: 80
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 2
-Cpp11BracedListStyle: true
+Cpp11BracedListStyle: false
 DerivePointerBinding: false
 ExperimentalAutoDetectBinPacking: false
 IndentCaseLabels: false
@@ -47,4 +47,3 @@ Standard: Cpp03
 TabWidth: 2
 UseTab: Never
 ...
-
